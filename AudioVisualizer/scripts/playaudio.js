@@ -6,17 +6,25 @@
     }
     var context = new AudioContext();
     var audioBuffer;
-    var sourceNode;
+    var sourceNode, audioSource;
+    var audioReady = false;
 
     // Load the sound
-    setupAudioNodes();
-    loadSound('AudioFiles/Albino.mp3');
+    function init() {
+        setupAudioNodes();
+        loadSound('AudioFiles/Albino.mp3');
+    }
+    init();
 
     function setupAudioNodes() {
         // create a buffer source node
         sourceNode = context.createBufferSource();
+
         // and connect to destination
         sourceNode.connect(context.destination);
+
+        var audioElem = document.querySelector('#audioPlayer');
+        audioSource = context.createMediaElementSource(audioElem);
     }
 
     // Load the specified sound
@@ -30,19 +38,31 @@
             // decode the data
             context.decodeAudioData(request.response, function (buffer) {
                 // when the audio is decoded play the sound
-                playSound(buffer);
+                audioBuffer = buffer;
             }, onError);
         }
         request.send();
     }
 
     function playSound(buffer) {
-        sourceNode.buffer = buffer;
-        sourceNode.start(0);
+        audioSource.mediaElement.play();
+        //sourceNode.buffer = buffer;
+        //sourceNode.start(0);
     }
 
     // log if an error occurs
     function onError(e) {
         console.log(e);
+    }
+
+    $('#togglePlay').click(waitToPlay);
+
+    function waitToPlay() {
+        if (audioBuffer) {
+            playSound(audioBuffer);
+        }
+        else {
+            setTimeout(waitToPlay, 100);
+        }
     }
 }();
