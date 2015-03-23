@@ -10,7 +10,7 @@
 
     // Load the sound
     setupAudioNodes();
-    loadSound('AudioFiles/Etude 2_0.mp3');
+    loadSound('AudioFiles/Albino.mp3');
 
     function setupAudioNodes() {
         // create a buffer source node
