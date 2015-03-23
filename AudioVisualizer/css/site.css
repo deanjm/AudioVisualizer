@@ -1,0 +1,25 @@
+﻿body {
+    background-color: black;
+    color: white;
+}
+
+#controls {
+    padding-top: 5px;
+}
+
+div.clear {
+    clear: both;
+}
+
+div.left {
+    float: left;
+}
+
+div.relative {
+    position: relative;
+}
+
+div#legend {
+    background-color: transparent;
+    color: white;
+}

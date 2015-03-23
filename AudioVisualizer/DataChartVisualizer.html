@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="controls" style="padding-top: 5px;">
+        <select id="musicSelect"></select>
+        <select id="visSelect"></select>
+        <input id="btnPause" type="button" value="Play" />
+        <div>
+            <div id="rngFPS" style="width: 50px; float: left">
+            </div>
+            <div id="currValFPS" style="float: left">
+                FPS: 15
+            </div>
+            <input id="shouldLoop" value="false" type="checkbox" />Loop
+        </div>
+    </div>
+    <div style="clear:both">
+        <div id="chart" style="position: relative; float: left">
+        </div>
+        <div id="legend" style="position: relative; float: left; background-color: transparent;
+            color: White">
+        </div>
+    </div>
+    <script src="scripts/jquery-2.1.3.js"></script>
+    <script src="scripts/jquery-ui-1.11.4.js"></script>
+    <script src="scripts/infragistics.js"></script>
+    <script src="scripts/DataChartVisualizer.js"></script>
+</body>
+</html>
