@@ -65,6 +65,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AudioFiles\Etude 2_0.mp3" />
+    <Content Include="PlayAudio.html" />
+    <Content Include="scripts\playaudio.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
