@@ -71,6 +71,7 @@
     <Content Include="AudioFiles\Gigue.mp3" />
     <Content Include="AudioFiles\Sacchrine Love Theme.mp3" />
     <Content Include="AudioFiles\Tech E Thumper.mp3" />
+    <Content Include="AudioTag.html" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -196,6 +197,7 @@
     <Content Include="css\themes\infragistics\framework.less" />
     <Content Include="css\themes\infragistics\infragistics.theme.less" />
     <None Include="scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="scripts\AudioTag.js" />
     <Content Include="scripts\chroma.js" />
     <Content Include="scripts\DataChartVisualizer.js" />
     <Content Include="scripts\FrequencySpectrum.js" />
