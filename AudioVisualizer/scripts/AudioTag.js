@@ -1,9 +1,9 @@
 ﻿var AudioTag = function () {
     var audio, context, sourceNode,
-        splitter, leftAnalyser, rightAnalyser, analyser,
+        splitter, analysers = [], channelNames,
         javaScriptNode,
         songChooser, chart, brushes,
-        seriesType, thickness, maxPoints = 256, data = [];
+        seriesType, thickness, maxPoints = 50, data = [];
 
     function init() {
         songChooser = $('#songChooser');
@@ -11,7 +11,8 @@
 
         initAudioTag();
         context = new AudioContext();
-        
+
+        channelNames = ["Left", "Right", "SurroundLeft", "SurroundRight", "Center", "LFE"];
         initAudioNodes();
 
         brushes = ["red", "orange", "yellow", "lime", "blue", "magenta"];
@@ -19,7 +20,7 @@
         thickness = 3;
 
         for (var i = 0; i < maxPoints; i++) {
-            data[i] = { Label: "", AvgLeft: 0, AvgRight: 0 };
+            data[i] = { Label: "", Left: 0, Right: 0, SurroundLeft: 0, SurroundRight: 0, Center: 0, LFE: 0 };
         }
         createChart();
     }
@@ -33,6 +34,7 @@
         javaScriptNode = context.createScriptProcessor(2048, 1, 1);
         javaScriptNode.connect(context.destination);
 
+
         //leftAnalyser = context.createAnalyser();
         //leftAnalyser.smoothingTimeConstant = 0.5;
         //leftAnalyser.fftSize = 1024;
@@ -40,23 +42,26 @@
         //rightAnalyser = context.createAnalyser();
         //rightAnalyser.smoothingTimeConstant = 0.5;
         //rightAnalyser.fftSize = 1024;
-        analyser = context.createAnalyser();
-        analyser.smoothingTimeConstant = 0.3;
-        analyser.fftSize = 512;
 
         sourceNode = context.createMediaElementSource(audio);
-        //splitter = context.createChannelSplitter();
+        splitter = context.createChannelSplitter();
 
-        //sourceNode.connect(splitter);
+        sourceNode.connect(splitter);
+
+        for (var i = 0; i < 6; i++) {
+            var analyser = context.createAnalyser();
+            analyser.smoothingTimeConstant = 0.5;
+            analyser.fftSize = 512;
+
+            splitter.connect(analyser, i, 0);
+            analysers[i] = analyser;
+        }
 
         //splitter.connect(leftAnalyser, 0, 0);
         //splitter.connect(rightAnalyser, 1, 0);
 
-        //leftAnalyser.connect(javaScriptNode);
+        analysers[0].connect(javaScriptNode);
 
-        //sourceNode.connect(context.destination);
-        sourceNode.connect(analyser);
-        analyser.connect(javaScriptNode);
         sourceNode.connect(context.destination);
     }
 
@@ -80,7 +85,7 @@
                 name: "yAxis",
                 type: "numericY",
                 minimumValue: 0,
-                maximumValue: 200,
+                maximumValue: 170,
                 labelVisibility: "collapsed"
             },
             {
@@ -104,60 +109,60 @@
                 labelVisibility: "collapsed"
             }],
             series: [
-            //{
-            //    name: "VolLeft",
-            //    type: seriesType,
-            //    xAxis: "xAxis",
-            //    yAxis: "yAxis",
-            //    valueMemberPath: "VolLeft",
-            //    title: "Vol Left",
-            //    thickness: thickness
-            //},
-            //{
-            //    name: "VolRight",
-            //    type: seriesType,
-            //    xAxis: "xAxis",
-            //    yAxis: "yAxis",
-            //    valueMemberPath: "VolRight",
-            //    title: "Vol Right",
-            //    thickness: thickness
-            //},
             {
-                name: "AvgLeft",
+                name: "Left",
                 type: seriesType,
                 xAxis: "xAxis",
                 yAxis: "yAxis",
-                valueMemberPath: "AvgLeft",
-                title: "Avg Vol Left",
+                valueMemberPath: "Left",
+                title: "Left",
                 thickness: thickness
             },
             {
-                name: "AvgRight",
+                name: "Right",
                 type: seriesType,
                 xAxis: "xAxis",
                 yAxis: "yAxis",
-                valueMemberPath: "AvgRight",
-                title: "Avg Vol Right",
+                valueMemberPath: "Right",
+                title: "Right",
                 thickness: thickness
             },
-            //{
-            //    name: "DeltaLeft",
-            //    type: seriesType,
-            //    xAxis: "xAxis",
-            //    yAxis: "yAxis",
-            //    valueMemberPath: "DeltaLeft",
-            //    title: "Delta Left",
-            //    thickness: thickness
-            //},
-            //{
-            //    name: "DeltaRight",
-            //    type: seriesType,
-            //    xAxis: "xAxis",
-            //    yAxis: "yAxis",
-            //    valueMemberPath: "DeltaRight",
-            //    title: "Delta Right",
-            //    thickness: thickness
-            //}
+            {
+                name: "SurroundLeft",
+                type: seriesType,
+                xAxis: "xAxis",
+                yAxis: "yAxis",
+                valueMemberPath: "SurroundLeft",
+                title: "Surround Left",
+                thickness: thickness
+            },
+            {
+                name: "SurroundRight",
+                type: seriesType,
+                xAxis: "xAxis",
+                yAxis: "yAxis",
+                valueMemberPath: "SurroundRight",
+                title: "Surround Right",
+                thickness: thickness
+            },
+            {
+                name: "Center",
+                type: seriesType,
+                xAxis: "xAxis",
+                yAxis: "yAxis",
+                valueMemberPath: "Center",
+                title: "Center",
+                thickness: thickness
+            },
+            {
+                name: "LFE",
+                type: seriesType,
+                xAxis: "xAxis",
+                yAxis: "yAxis",
+                valueMemberPath: "LFE",
+                title: "Low Frequency Effects",
+                thickness: thickness
+            }
             ],
             horizontalZoomable: true,
             verticalZoomable: true,
@@ -172,24 +177,37 @@
             //// get the average for the first channel
             //var leftArray = new Uint8Array(leftAnalyser.frequencyBinCount);
             //leftAnalyser.getByteFrequencyData(leftArray);
-            //var leftAvg = getAverageVolume(leftArray);
-            
+            //var leftData = calculateDataValuesFromArray(leftArray);
+
             //// get the average for the second channel
             //var rightArray = new Uint8Array(rightAnalyser.frequencyBinCount);
             //rightAnalyser.getByteFrequencyData(rightArray);
-            //var rightAvg = getAverageVolume(rightArray);
+            //var rightData = calculateDataValuesFromArray(rightArray);
+            var newPoint = { Label: "", Left: 0, Right: 0, SurroundLeft: 0, SurroundRight: 0, Center: 0, LFE: 0 };
 
-            //console.log("left: " + leftAvg + ", right: " + rightAvg);
+            for (var i = 0; i < analysers.length; i++) {
+                var currAnalyser = analysers[i];
+                var valueArray = new Uint8Array(currAnalyser.frequencyBinCount);
+                currAnalyser.getByteFrequencyData(valueArray);
+                var average = getAverageVolume(valueArray);
+                var channelName = channelNames[i];
 
-            //var newPoint = { Label: "", AvgLeft: leftAvg, AvgRight: rightAvg }
-            var array = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(array);
-
-            for (var i = 0; i < array.length; i++) {
-                var newPoint = { Label: "", AvgLeft: array[i] };
-                console.log(array[i]);
-                drawPoint(newPoint);
+                newPoint[channelName] = average;
             }
+
+            console.log("left: " + newPoint.Left + ", right: " + newPoint.Right);
+
+            //var newPoint = {
+            //    Label: "",
+            //    Left: leftData.Average,
+            //    Right: rightData.Average,
+            //    SurroundLeft: leftData.Max,
+            //    SurroundRight: rightData.Max,
+            //    Center: leftData.Min,
+            //    LFE: rightData.Min
+            //};
+
+            drawPoint(newPoint);
         }
     }
 
@@ -205,7 +223,6 @@
         var average;
 
         var length = array.length;
-        console.log(length);
 
         // get all the frequency amplitudes
         for (var i = 0; i < length; i++) {
