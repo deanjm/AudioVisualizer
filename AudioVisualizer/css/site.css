@@ -19,7 +19,16 @@ div.relative {
     position: relative;
 }
 
+div#chart {
+    display: inline-block;
+}
+
 div#legend {
     background-color: transparent;
     color: white;
+    display: inline-block;
+}
+
+audio {
+    width: 800px;
 }

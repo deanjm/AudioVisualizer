@@ -197,6 +197,7 @@
     <Content Include="css\themes\infragistics\framework.less" />
     <Content Include="css\themes\infragistics\infragistics.theme.less" />
     <None Include="scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="ReadID3Tags.html" />
     <Content Include="scripts\AudioTag.js" />
     <Content Include="scripts\chroma.js" />
     <Content Include="scripts\DataChartVisualizer.js" />
@@ -207,6 +208,7 @@
     <Content Include="scripts\jquery-ui-1.11.4.js" />
     <Content Include="scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="scripts\playaudio.js" />
+    <Content Include="scripts\ReadID3Tags.js" />
     <Content Include="scripts\Spectogram.js" />
     <Content Include="scripts\VolumeMeter.js" />
     <Content Include="Spectogram.html" />
@@ -232,7 +234,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3207</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:3109/</IISUrl>
+          <IISUrl>http://localhost:3207/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

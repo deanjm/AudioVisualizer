@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioVisualizer", "AudioVisualizer\AudioVisualizer.csproj", "{47A80CD8-10BD-4FCA-8782-F7625EE488C3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C47A9539-A1BB-46AF-AE41-9417F5049A54} = {C47A9539-A1BB-46AF-AE41-9417F5049A54}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongInfoService", "SongInfoService\SongInfoService.csproj", "{C47A9539-A1BB-46AF-AE41-9417F5049A54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{47A80CD8-10BD-4FCA-8782-F7625EE488C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47A80CD8-10BD-4FCA-8782-F7625EE488C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47A80CD8-10BD-4FCA-8782-F7625EE488C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47A9539-A1BB-46AF-AE41-9417F5049A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47A9539-A1BB-46AF-AE41-9417F5049A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47A9539-A1BB-46AF-AE41-9417F5049A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47A9539-A1BB-46AF-AE41-9417F5049A54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

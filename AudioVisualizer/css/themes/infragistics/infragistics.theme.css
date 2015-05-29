@@ -681,12 +681,13 @@ input.ui-button,input.ui-igbutton{border-radius:0!important}
 .ui-igedit.ui-state-hover,.ui-igcombo.ui-state-hover{border-color:#444}
 .ui-igedit-button.ui-state-highlight,.ui-igedit-button.ui-state-hover,.ui-igcombo-button.ui-state-highlight,.ui-igcombo-button.ui-state-hover{border:inherit}
 .ui-igedit.ui-state-focus,.ui-igcombo.ui-state-focus,.ui-igedit.ui-state-focus.ui-state-hover,.ui-igcombo.ui-state-focus.ui-state-hover{border-color:#4897aa}
-.ui-igcombo.ui-state-focus .ui-igcombo-button{background-color:#9ecbd6;border-color:#4897aa}
+.ui-igcombo.ui-state-focus .ui-igcombo-button,.ui-igcombo.ui-state-active .ui-igcombo-button{background-color:#9ecbd6;border-color:#4897aa}
 .ui-igcombo.ui-state-hover,.ui-igcombo.ui-state-default{background-color:transparent}
 .ui-igcombo-clear .ui-icon,.ui-igedit-buttonclear .ui-icon{background-image:url(images/ui-icons_888888_256x240.png)}
 .ui-igedit-buttonclear.ui-state-hover .ui-igedit-buttonimagehover,.ui-igedit-buttonclear.ui-state-default.ui-state-hover .ui-icon,.ui-igcombo-clear.ui-igcombo-clear-hover.ui-state-hover .ui-icon{background-image:url(images/ui-icons_228ef1_256x240.png)}
 .ui-igcombo-listitem-match{font-weight:bold}
 .ui-igcombo-field{color:#444}
+.ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,.ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,.ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus{background-color:#c2dee5;border-color:#67adbe}
 .ui-chart-palette-1{background-color:#77B5C5!important;border:1px solid #3d7d8d!important}
 .ui-chart-palette-2{background-color:#C0C0C0!important;border:1px solid #8f8f8f!important}
 .ui-chart-palette-3{background-color:#81AE7A!important;border:1px solid #608f58!important}

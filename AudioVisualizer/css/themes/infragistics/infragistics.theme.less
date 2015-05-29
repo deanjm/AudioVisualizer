@@ -2814,7 +2814,8 @@ input.ui-igbutton {
     border-color: @accent2;
 }
 
-.ui-igcombo.ui-state-focus .ui-igcombo-button {
+.ui-igcombo.ui-state-focus .ui-igcombo-button,
+.ui-igcombo.ui-state-active .ui-igcombo-button {
     background-color: @accent1;
     border-color: @accent2;
 }
@@ -2841,6 +2842,13 @@ input.ui-igbutton {
 
 .ui-igcombo-field {
     color: #444;
+}
+
+.ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
+.ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
+.ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {
+    background-color: lighten(@accent1, 10%);
+    border-color: lighten(@accent2, 10%);
 }
 /***********/
 /* igChart */
