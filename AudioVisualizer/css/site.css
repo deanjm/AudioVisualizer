@@ -21,12 +21,20 @@ div.relative {
 
 div#chart {
     display: inline-block;
+    width:800px;
+    height:400px;
 }
 
 div#legend {
     background-color: transparent;
     color: white;
+    top: 0px;
+}
+
+div#legendArea{
+    width: 100px;
     display: inline-block;
+    vertical-align: top;
 }
 
 audio {

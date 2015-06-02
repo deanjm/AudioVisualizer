@@ -2,32 +2,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <link href="css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="css/structure/infragistics.css" rel="stylesheet" />
+    
     <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
-    <div id="controls" style="padding-top: 5px;">
-        <select id="musicSelect"></select>
-        <select id="visSelect"></select>
-        <input id="btnPause" type="button" value="Play" />
-        <div>
-            <div id="rngFPS" style="width: 50px; float: left">
-            </div>
-            <div id="currValFPS" style="float: left">
-                FPS: 15
-            </div>
-            <input id="shouldLoop" value="false" type="checkbox" />Loop
+    <div>
+        <div id="chart"></div>
+        <div id="legendArea">
+            <div id="legend"></div>
+            <select id="chartType">
+                <option value="area">Area</option>
+                <option value="bubble">Bubble</option>
+                <option value="column">Column</option>
+                <option value="line">Line</option>
+                <option value="point">Point</option>
+                <option value="spline">Spline</option>
+                <option value="splineArea">Spline Area</option>
+                <option value="waterfall">Waterfall</option>
+            </select>            
         </div>
     </div>
-    <div style="clear:both">
-        <div id="chart" style="position: relative; float: left">
-        </div>
-        <div id="legend" style="position: relative; float: left; background-color: transparent;
-            color: White">
-        </div>
-    </div>
+    <audio id="audio" controls></audio>
+    <table id="songGrid"></table>
+
     <script src="scripts/jquery-2.1.3.js"></script>
     <script src="scripts/jquery-ui-1.11.4.js"></script>
     <script src="scripts/infragistics.js"></script>
+
     <script src="scripts/DataChartVisualizer.js"></script>
 </body>
 </html>
