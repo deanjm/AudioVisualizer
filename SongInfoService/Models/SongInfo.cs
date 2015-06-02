@@ -9,6 +9,7 @@ namespace SongInfoService.Models
     {
         public string Album { get; set; }
         public string Comment { get; set; }
+        public string Duration { get; set; }
         public string Artist { get; set; }
         public string Genre { get; set; }
         public string Title { get; set; }

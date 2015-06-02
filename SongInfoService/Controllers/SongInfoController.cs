@@ -34,6 +34,7 @@ namespace SongInfoService.Controllers
                 info.Genre = song.Tag.FirstGenre;
                 info.Title = song.Tag.Title;
                 info.Year = (int)song.Tag.Year;
+                info.Duration = song.Properties.Duration.ToString(@"hh\:mm\:ss");
 
                 info.URL = baseUrl + VirtualPathUtility.ToAbsolute("~/AudioFiles/" + Path.GetFileName(songPath));
                 SongDetails.Add(info);
