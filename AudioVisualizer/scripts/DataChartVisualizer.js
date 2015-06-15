@@ -3,7 +3,7 @@
         splitter, leftAnalyser, rightAnalyser, channelNames,
         javaScriptNode,
         songChooser, chart,
-        seriesType, thickness, maxPoints = 1024, data = [], songList = [], dataSource;
+        seriesType, thickness, maxPoints = 2048, data = [], songList = [], dataSource;
 
     function init() {
         chart = $('#chart');
@@ -77,12 +77,13 @@
                     mode: 'row',
                     multipleSelection: false,
                     rowSelectionChanged: function (evt, ui) {
-                        var record = $songGrid.igGrid('findRecordByKey', ui.row.id);
-                        var shouldPlay = !sourceNode.mediaElement.paused;
-                        audio.src = record.URL;
-                        if (shouldPlay) {
-                            sourceNode.mediaElement.play();
-                        }
+                        changeSong(ui.row.id);
+                        //var record = $songGrid.igGrid('findRecordByKey', ui.row.id);
+                        //var shouldPlay = !audio.paused;
+                        //audio.src = record.URL;
+                        //if (shouldPlay) {
+                        //    audio.play();
+                        //}
                     }
                 }
             ],
@@ -111,13 +112,9 @@
                             xMemberPath: "Left",
                             yMemberPath: "Right",
                             fillMemberPath: "Left",
-                            radiusMemberPath: "Right",
+                            radiusMemberPath: "Left",
                             labelMemberPath: "Bucket",
                             markerType: "Circle",
-                            radiusScale: {
-                                minimumValue: 0,
-                                maximumValue: 50
-                            },
                             fillScale: {
                                 type: "value",
                                 brushes: ["red", "orange", "yellow"],
@@ -246,7 +243,7 @@
     init();
 
     javaScriptNode.onaudioprocess = function () {
-        if (!sourceNode.mediaElement.paused) {
+        if (!audio.paused) {
             var leftArray = new Uint8Array(leftAnalyser.frequencyBinCount);
             leftAnalyser.getByteFrequencyData(leftArray);
 
@@ -255,6 +252,25 @@
 
             extractSpectrum(leftArray, rightArray);
             chart.igDataChart('notifyClearItems', data);
+        }
+    }
+
+    audio.addEventListener('ended', function () {
+        var selectedRow = $songGrid.igGridSelection("selectedRow");
+
+        if (selectedRow.index < $songGrid.igGrid("allRows").length - 1) {
+            $songGrid.igGridSelection("selectRow", selectedRow.index + 1);
+            selectedRow = $songGrid.igGridSelection("selectedRow");
+            changeSong(selectedRow.id, true);
+        }
+    });
+
+    function changeSong(songID, overrideShouldPlay) {
+        var record = $songGrid.igGrid('findRecordByKey', songID);
+        var shouldPlay = !audio.paused;
+        audio.src = record.URL;
+        if (shouldPlay || overrideShouldPlay) {
+            audio.play();
         }
     }
 
