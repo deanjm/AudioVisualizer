@@ -40,3 +40,10 @@ div#legendArea{
 audio {
     width: 800px;
 }
+
+#dropSongCont {
+    height: 200px;
+    border-radius: 25px;
+    border: 1px dashed grey;
+    text-align: center;
+}

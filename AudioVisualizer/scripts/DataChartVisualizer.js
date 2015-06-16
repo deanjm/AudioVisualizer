@@ -9,6 +9,7 @@
         chart = $('#chart');
         $songGrid = $('#songGrid');
         $chartTypeCombo = $('#chartType');
+        $dropSongCont = $('#dropSongCont');
 
         initAudioTag();
         context = new AudioContext();
@@ -263,6 +264,25 @@
             selectedRow = $songGrid.igGridSelection("selectedRow");
             changeSong(selectedRow.id, true);
         }
+    });
+
+    $dropSongCont.on('dragover', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        //event.originalEvent.dataTransfer.dropEffect = 'copy';
+    });
+
+    $dropSongCont.on('drop', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var fileData = event.originalEvent.dataTransfer.getData('audio/mpeg3');
+        var file = event.originalEvent.dataTransfer.files[0];
+        //audio.src = file.urn || file.name;
+        var reader = new FileReader();
+        reader.addEventListener('load', function (event) {
+            audio.src = event.target.result;
+        });
+        reader.readAsDataURL(file);
     });
 
     function changeSong(songID, overrideShouldPlay) {
