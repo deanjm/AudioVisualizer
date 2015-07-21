@@ -1,27 +1,23 @@
 ﻿var DataChartVisualizers = function () {
     var audio, context, sourceNode,
-        splitter, leftAnalyser, rightAnalyser, channelNames,
-        javaScriptNode,
-        songChooser, chart,
-        seriesType, thickness, maxPoints = 2048, data = [], songList = [], dataSource;
+        splitter, leftAnalyser, rightAnalyser, javaScriptNode,
+        $chart, $songGrid, $chartTypeCombo,
+        seriesType, maxPoints = 512, data = [], songList = [], dataSource;
 
     function init() {
-        chart = $('#chart');
+        $chart = $('#chart');
         $songGrid = $('#songGrid');
         $chartTypeCombo = $('#chartType');
-        $dropSongCont = $('#dropSongCont');
-
+		
         initAudioTag();
         context = new AudioContext();
 
-        channelNames = ["Left", "Right", "SurroundLeft", "SurroundRight", "Center", "LFE"];
         initAudioNodes();
 
         initGrid();
         initChartTypeCombo();
 
         seriesType = "area";
-        thickness = 3;
 
         for (var i = 0; i < maxPoints; i++) {
             data[i] = { Bucket: i, Left: 0, Right: 0 };
@@ -44,11 +40,9 @@
         sourceNode.connect(splitter);
 
         leftAnalyser = context.createAnalyser();
-        leftAnalyser.smoothingTimeConstant = 0.5;
         leftAnalyser.fftSize = maxPoints * 2;
 
         rightAnalyser = context.createAnalyser();
-        rightAnalyser.smoothingTimeConstant = 0.5;
         rightAnalyser.fftSize = maxPoints * 2;
 
         splitter.connect(leftAnalyser, 0, 0);
@@ -66,6 +60,7 @@
             columns: [
                 { key: "Title", headerText: "Title" },
                 { key: "Artist", headerText: "Artist" },
+				{ key: "Duration", headerText: "Duration" },
                 { key: "Album", headerText: "Album" },
                 { key: "Genre", headerText: "Genre" },
                 { key: "Year", headerText: "Year" },
@@ -79,12 +74,6 @@
                     multipleSelection: false,
                     rowSelectionChanged: function (evt, ui) {
                         changeSong(ui.row.id);
-                        //var record = $songGrid.igGrid('findRecordByKey', ui.row.id);
-                        //var shouldPlay = !audio.paused;
-                        //audio.src = record.URL;
-                        //if (shouldPlay) {
-                        //    audio.play();
-                        //}
                     }
                 }
             ],
@@ -101,31 +90,56 @@
                 if (ui.items && ui.items.length > 0) {
                     seriesType = ui.items[0].data.value;
 
-                    chart.igDataChart("option", "series", [{ name: "Left", remove: true }]);
-                    chart.igDataChart("option", "series", [{ name: "Right", remove: true }]);
-                    chart.igDataChart("option", "series", [{ name: "Bubble", remove: true }]);
+                    $chart.igDataChart("option", "series", [{ name: "Left", remove: true }]);
+                    $chart.igDataChart("option", "series", [{ name: "Right", remove: true }]);
+                    $chart.igDataChart("option", "series", [{ name: "BubbleRight", remove: true }]);
+                    $chart.igDataChart("option", "series", [{ name: "BubbleLeft", remove: true }]);
                     if (seriesType == "bubble") {
-                        chart.igDataChart("option", "series", [{
-                            name: "Bubble",
+                        $chart.igDataChart("option", "series", [
+                            {
+                                name: "BubbleRight",
+                                type: seriesType,
+                                xAxis: "numXAxisInv",
+                                yAxis: "bubbleYAxis",
+                                xMemberPath: "Bucket",
+                                yMemberPath: "Right",
+                                fillMemberPath: "Right",
+                                radiusMemberPath: "Right",
+                                labelMemberPath: "Bucket",
+                                markerType: "pentagram",
+                                markerOutline: "transparent",
+                                title: "Right",
+                                fillScale: {
+                                    type: "value",
+                                    brushes: ["blue", "green", "yellow"],
+                                    minimumValue: 0,
+                                    maximumValue: 256
+                                }
+                            },
+                            {
+                            name: "BubbleLeft",
                             type: seriesType,
                             xAxis: "numXAxis",
-                            yAxis: "yAxis",
-                            xMemberPath: "Left",
-                            yMemberPath: "Right",
+                            yAxis: "bubbleYAxis",
+                            xMemberPath: "Bucket",
+                            yMemberPath: "Left",
                             fillMemberPath: "Left",
                             radiusMemberPath: "Left",
                             labelMemberPath: "Bucket",
-                            markerType: "Circle",
+                            title: "Left",
+                            markerType: "pentagram",
+                            markerOutline: "transparent",
                             fillScale: {
                                 type: "value",
                                 brushes: ["red", "orange", "yellow"],
                                 minimumValue: 0,
                                 maximumValue: 256
                             }
-                        }]);
+                        }
+                        ]);
                     }
                     else {
-                        chart.igDataChart("option", "series", [{
+                        $chart.igDataChart("option", "series", [{
                             name: "Left",
                             type: seriesType,
                             xAxis: "xAxis",
@@ -163,9 +177,9 @@
     }
 
     function createChart() {
-        chart.igDataChart({
+        $chart.igDataChart({
             width: "800px",
-            height: "400px",
+            height: "500px",
             autoMarginWidth: 0,
             dataSource: dataSource,
             defaultInteraction: "none",
@@ -184,7 +198,7 @@
                 type: "categoryX",
                 label: "Bucket",
                 labelVisibility: "collapsed",
-                isInverted: "true"
+                isInverted: true
             },
             {
                 name: "yAxis",
@@ -194,11 +208,26 @@
                 labelVisibility: "collapsed"
             },
             {
+                name: "bubbleYAxis",
+                type: "numericY",
+                minimumValue: 0,
+                maximumValue: maxPoints,
+                labelVisibility: "collapsed"
+            },
+            {
                 name: "numXAxis",
                 type: "numericX",
-                minimumValue: 0,
-                maximumValue: 256,
+                minimumValue: -30,
+                maximumValue: maxPoints,
                 labelVisibility: "collapsed"
+            },
+            {
+                name: "numXAxisInv",
+                type: "numericX",
+                minimumValue: -30,
+                maximumValue: maxPoints,
+                labelVisibility: "collapsed",
+                isInverted: true
             }
             ],
             series: [
@@ -234,10 +263,7 @@
                     ]
                 }
             }
-            ],
-            horizontalZoomable: false,
-            verticalZoomable: false,
-            windowResponse: "immediate"
+            ]
         });
     }
 
@@ -252,7 +278,7 @@
             rightAnalyser.getByteFrequencyData(rightArray);
 
             extractSpectrum(leftArray, rightArray);
-            chart.igDataChart('notifyClearItems', data);
+            $chart.igDataChart('notifyClearItems', data);
         }
     }
 
@@ -265,26 +291,7 @@
             changeSong(selectedRow.id, true);
         }
     });
-
-    $dropSongCont.on('dragover', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        //event.originalEvent.dataTransfer.dropEffect = 'copy';
-    });
-
-    $dropSongCont.on('drop', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        var fileData = event.originalEvent.dataTransfer.getData('audio/mpeg3');
-        var file = event.originalEvent.dataTransfer.files[0];
-        //audio.src = file.urn || file.name;
-        var reader = new FileReader();
-        reader.addEventListener('load', function (event) {
-            audio.src = event.target.result;
-        });
-        reader.readAsDataURL(file);
-    });
-
+	
     function changeSong(songID, overrideShouldPlay) {
         var record = $songGrid.igGrid('findRecordByKey', songID);
         var shouldPlay = !audio.paused;
